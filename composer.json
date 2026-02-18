@@ -1,0 +1,43 @@
+{
+    "name": "escorp/lemanapro-api-client",
+    "description": "Laravel package for LemanaPRO API",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Escorp\\LemanaProApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Escorp\\LemanaProApiClient\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+        "guzzlehttp/guzzle": "^7.10",
+        "psr/http-client": "^1.0",
+        "psr/http-message": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "mockery/mockery": "^1.6",
+        "nyholm/psr7": "^1.8",
+        "php-http/mock-client": "^1.6"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Escorp\\LemanaProApiClient\\Laravel\\LemanaProApiClientServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
