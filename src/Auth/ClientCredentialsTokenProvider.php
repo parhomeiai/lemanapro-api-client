@@ -34,7 +34,7 @@ final class ClientCredentialsTokenProvider implements TokenProviderInterface
     private $expiresAt = 0;
 
     public function __construct(
-        ClientInterface $httpClient,
+        HttpClientInterface $httpClient,
         string $clientId,
         string $clientSecret,
         ?string $authUrl = null,
@@ -77,13 +77,13 @@ final class ClientCredentialsTokenProvider implements TokenProviderInterface
 
     /**
      * Обновляет токен
-     * 
+     *
      * @return void
      * @throws \RuntimeException
      */
     private function refreshToken(): void
     {
-        $response = $this->http->request(
+        $response = $this->httpClient->request(
             'POST',
             $this->authUrl,
             [

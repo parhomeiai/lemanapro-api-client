@@ -8,29 +8,37 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 
-use Escorp\LemanaProApiClient\Auth\StaticTokenProvider;
+use Escorp\LemanaProApiClient\Auth\ClientCredentialsTokenProvider;
 use Escorp\LemanaProApiClient\Http\GuzzleHttpClient;
 use Escorp\LemanaProApiClient\Http\Psr18HttpClient;
 use Escorp\LemanaProApiClient\LemanaProApiClient;
-use Escorp\LemanaProApiClient\Api\ApiHostRegistry;
+
+use Escorp\LemanaProApiClient\Api\Logistic\LogisticApi;
 
 final class LemanaProApiClientFactory
 {
     /**
      * Создание клиента
      *
-     * @param string $token WB API token
+     * @param string $clientId
+     * @param string $clientSecret
      * @param array{
      *   timeout?: int,
      *   retry_times?: int,
-     *   retry_sleep_ms?: int
+     *   retry_sleep_ms?: int,
+     *   base_url?: string,
+     *   token_url?: string
      * } $options
+     * @param ClientInterface|null $psr18Client
+     * @return LemanaProApiClient
      */
-    public static function make(string $token, array $options = [], ?ClientInterface $psr18Client = null): WbApiClient
+    public static function make(string $clientId, string $clientSecret, array $options = [], ?ClientInterface $psr18Client = null): LemanaProApiClient
     {
         $timeout = $options['timeout'] ?? 10;
         $retryTimes = $options['retry_times'] ?? 3;
         $retrySleepMs = $options['retry_sleep_ms'] ?? 300;
+        $baseUrl = $options['base_url'] ?? null;
+        $tokenUrl = $options['token_url'] ?? null;
 
         if ($psr18Client === null) {
             // дефолтный Guzzle → PSR-18 адаптер
@@ -47,33 +55,15 @@ final class LemanaProApiClientFactory
         $guzzleHttpClient = new GuzzleHttpClient($http, $retryTimes, $retrySleepMs);
 
         // Token provider
-        $tokenProvider = new StaticTokenProvider($token);
+        $tokenProvider = new ClientCredentialsTokenProvider($guzzleHttpClient, $clientId, $clientSecret, $tokenUrl);
 
-        // Host Registry
-        $apiHostRegistry = new ApiHostRegistry();
 
         //Domain API
-//        $pingApi = new PingApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $newsApi = new NewsApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $sellerApi = new SellerApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $inviteApi = new InviteApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $usersApi = new UsersApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $contentApi = new ContentApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $pricesApi = new PricesApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $stocksApi = new StocksApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
-//        $ordersFbsApi = new OrdersFbsApi($guzzleHttpClient, $tokenProvider, $apiHostRegistry);
+        $logisticApi = new LogisticApi($guzzleHttpClient, $tokenProvider, $baseUrl);
 
         //Root client
         return new LemanaProApiClient(
-//                    $pingApi,
-//                    $newsApi,
-//                    $sellerApi,
-//                    $inviteApi,
-//                    $usersApi,
-//                    $contentApi,
-//                    $pricesApi,
-//                    $stocksApi,
-//                    $ordersFbsApi
+                    $logisticApi,
                 );
     }
 }

@@ -7,9 +7,9 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Escorp\LemanaProApiClient\Contracts\HttpClientInterface;
-use Escorp\LemanaProApiClient\Dto\WbErrorDto;
-use Escorp\LemanaProApiClient\Exceptions\WbApiClientException;
-use Escorp\LemanaProApiClient\Exceptions\WbHttpException;
+use Escorp\LemanaProApiClient\Dto\LemanaProErrorDto;
+use Escorp\LemanaProApiClient\Exceptions\LemanaProApiClientException;
+use Escorp\LemanaProApiClient\Exceptions\LemanaProHttpException;
 use InvalidArgumentException;
 
 /**
@@ -51,7 +51,7 @@ final class Psr18HttpClient implements HttpClientInterface
         $decoded = json_decode($body, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new WbApiClientException(
+            throw new LemanaProApiClientException(
                 'Invalid JSON response: ' . json_last_error_msg()
             );
         }
@@ -66,9 +66,9 @@ final class Psr18HttpClient implements HttpClientInterface
      * @param array $options
      * @return ResponseInterface
      * @throws InvalidArgumentException
-     * @throws WbHttpException
+     * @throws LemanaProHttpException
      * @throws type
-     * @throws WbApiClientException
+     * @throws LemanaProApiClientException
      */
     public function requestRaw(string $method, string $url, array $options = []): ResponseInterface
     {
@@ -156,20 +156,20 @@ final class Psr18HttpClient implements HttpClientInterface
                 $data = json_decode($body, true);
 
                 if (json_last_error() === JSON_ERROR_NONE && !empty($data)) {
-                    throw new WbHttpException(WbErrorDto::fromArray($data), $status);
+                    throw new LemanaProHttpException(LemanaProErrorDto::fromArray($data), $status);
                 }
 
-                throw new WbApiClientException(
+                throw new LemanaProApiClientException(
                     'HTTP error ' . $status . ': ' . $body,
                     $status
                 );
             }
 
             return $response;
-        } catch (WbHttpException $e) {
+        } catch (LemanaProHttpException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            throw WbApiClientException::fromException($e);
+            throw LemanaProApiClientException::fromException($e);
         }
     }
 }

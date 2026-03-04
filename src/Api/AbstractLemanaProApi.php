@@ -31,7 +31,7 @@ abstract class AbstractLemanaProApi
         $this->http = $http;
         $this->token = $token;
 
-        $this->baseUrl = (!$baseUrl) ? ('https://api.lemanapro.ru:443') : ($baseUrl);
+        $this->baseUrl = ($baseUrl) ? ($baseUrl) : ('https://api.lemanapro.ru:443');
     }
 
     /**
