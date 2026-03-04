@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    verbose="true"
+    failOnRisky="true"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="LemanaPro API Client Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <!-- чтобы тесты не лезли в реальные env -->
+        <env name="LEMANAPRO_CLIENT_ID" value="test-client_id"/>
+        <env name="LEMANAPRO_CLIENT_SECRET" value="test-client_secret"/>
+    </php>
+</phpunit>
