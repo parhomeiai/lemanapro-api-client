@@ -3,7 +3,7 @@
 namespace Escorp\LemanaProApiClient\Api\Logistic;
 
 use Escorp\LemanaProApiClient\Api\AbstractLemanaProApi;
-//use Escorp\WbApiClient\Dto\Common\PingResponseDto;
+use Escorp\LemanaProApiClient\Dto\Logistic\LocationsResponse;
 
 /**
  * Логистика
@@ -18,9 +18,9 @@ class LogisticApi extends AbstractLemanaProApi
      *
      * @param int $page
      * @param int $perPage
-     * @return type
+     * @return LocationsResponse
      */
-    public function locations(int $page = 0, int $perPage = 20)
+    public function locations(int $page = 0, int $perPage = 20): LocationsResponse
     {
         $url = $this->baseUrl . '/locations/logistic-location-public/v1/logistic-locations';
 
@@ -33,7 +33,6 @@ class LogisticApi extends AbstractLemanaProApi
             'query'   => $query,
         ]);
 
-        return $response;
-//        return PingResponseDto::fromArray($response);
+        return LocationsResponse::fromArray($response);
     }
 }
