@@ -103,4 +103,22 @@ class ParcelsApi extends AbstractLemanaProApi
 
         return $result;
     }
+
+    /**
+     * Подтвердить отправления
+     * Переводит массив отправлений по переданным идентификаторам в теле запроса в формате MP0123456-001 в статус "Подтверждено".
+     * 
+     * @param array $parcelsIds - идентификаторы отправления в формате MP0123456-001.
+     * @return type
+     */
+    public function parcelsConfirm(array $parcelsIds)
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels:confirm';
+
+        $response = $this->request('POST', $url, [
+            'json'   => $parcelsIds,
+        ]);
+
+        return $response;
+    }
 }
