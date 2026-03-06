@@ -33,6 +33,14 @@ final class ClientCredentialsTokenProvider implements TokenProviderInterface
     /** @var int */
     private $expiresAt = 0;
 
+    /**
+     *
+     * @param HttpClientInterface $httpClient
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string|null $authUrl
+     * @param int $leewaySeconds
+     */
     public function __construct(
         HttpClientInterface $httpClient,
         string $clientId,
