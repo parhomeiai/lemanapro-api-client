@@ -23,10 +23,22 @@ class LemanaProErrorDto
     public ?int $code;
 
     /**
-     * Детали ошибки
+     * Код http ответа
+     * @var int|null
+     */
+    public ?int $statusCode;
+
+    /**
+     * Детали ошибки. Массив или строка
+     * @var mixed|null
+     */
+    public $message;
+
+    /**
+     * Тест ошибки
      * @var string|null
      */
-    public ?string $message;
+    public ?string $error;
 
     /**
      *
@@ -40,7 +52,9 @@ class LemanaProErrorDto
         $dto->data = $data;
 
         $dto->code       = isset($data['code']) ? (int)$data['code'] : null;
-        $dto->message  = isset($data['message']) ? (string)$data['message'] : null;
+        $dto->statusCode       = isset($data['statusCode']) ? (int)$data['statusCode'] : null;
+        $dto->error       = isset($data['error']) ? (string)$data['error'] : null;
+        $dto->message  = $data['message'] ?? null;
 
         return $dto;
     }

@@ -25,7 +25,11 @@ class LemanaProHttpException extends LemanaProApiClientException
      */
     public function __construct(LemanaProErrorDto $error, $httpStatus = null)
     {
-        parent::__construct($error->message, $error->code);
+        $code = ($error->code) ? ($error->code) : ($error->statusCode);
+        $message = (is_array($error->message)) ? (reset($error->message)) : ($error->message);
+        $message = ($message) ? ($message) : ($error->error);
+
+        parent::__construct($message, $code);
         $this->error = $error;
         $this->httpStatus = $httpStatus;
     }
