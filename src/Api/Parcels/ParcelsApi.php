@@ -5,6 +5,7 @@ namespace Escorp\LemanaProApiClient\Api\Parcels;
 use Escorp\LemanaProApiClient\Api\AbstractLemanaProApi;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelsResponse;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelStatusDto;
+use Escorp\LemanaProApiClient\Dto\Parcels\ParcelCancelDto;
 
 use InvalidArgumentException;
 
@@ -107,13 +108,57 @@ class ParcelsApi extends AbstractLemanaProApi
     /**
      * Подтвердить отправления
      * Переводит массив отправлений по переданным идентификаторам в теле запроса в формате MP0123456-001 в статус "Подтверждено".
-     * 
+     *
      * @param array $parcelsIds - идентификаторы отправления в формате MP0123456-001.
-     * @return type
+     * @return array - ["MP01234567-001" => "Success"]
      */
-    public function parcelsConfirm(array $parcelsIds)
+    public function parcelsConfirm(array $parcelsIds): array
     {
         $url = $this->baseUrl . '/orders/merchants/v1/parcels:confirm';
+
+        $response = $this->request('POST', $url, [
+            'json'   => $parcelsIds,
+        ]);
+
+        return $response;
+    }
+
+    /**
+     * Отменить отправления
+     *
+     * @param array $parcelsCancels
+     * @return array - ["MP01234567-001": "Ok",]
+     * @throws InvalidArgumentException
+     */
+    public function parcelsCancel(array $parcelsCancels): array
+    {
+        foreach ($parcelsCancels as $p) {
+            if (!$p instanceof ParcelCancelDto) {
+                throw new InvalidArgumentException('parcelsCancels must contain ParcelCancelDto');
+            }
+        }
+
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels:cancel';
+
+        $response = $this->request('POST', $url, [
+            'json'   => [
+                array_map(function(ParcelCancelDto $parcelCancelDto){return $parcelCancelDto->toArray();}, $parcelsCancels)
+            ],
+        ]);
+
+        return $response;
+    }
+
+    /**
+     * Скомплектовать отправления
+     * Переводит массив отправлений по переданным идентификаторам в теле запроса в формате MP0123456-001 в статус "Скомплектовано".
+     *
+     * @param array $parcelsIds
+     * @return array - ["MP01234567-001": "Ok"]
+     */
+    public function parcelsPack(array $parcelsIds): array
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels:pack';
 
         $response = $this->request('POST', $url, [
             'json'   => $parcelsIds,
