@@ -4,6 +4,7 @@ namespace Escorp\LemanaProApiClient;
 
 use Escorp\LemanaProApiClient\Api\Logistic\LogisticApi;
 use Escorp\LemanaProApiClient\Api\Parcels\ParcelsApi;
+use Escorp\LemanaProApiClient\Api\Products\ProductsApi;
 
 class LemanaProApiClient
 {
@@ -11,12 +12,16 @@ class LemanaProApiClient
 
     public ParcelsApi $parcelsApi;
 
+    public ProductsApi $productsApi;
+
     public function __construct(
             LogisticApi $logisticApi,
-            ParcelsApi $parcelsApi
+            ParcelsApi $parcelsApi,
+            ProductsApi $productsApi
     ) {
         $this->logisticApi = $logisticApi;
         $this->parcelsApi = $parcelsApi;
+        $this->productsApi = $productsApi;
     }
 
     public function ping(): string
@@ -42,5 +47,15 @@ class LemanaProApiClient
     public function parcelsApi(): ParcelsApi
     {
         return $this->parcelsApi;
+    }
+
+    /**
+     * Возвращает объект для работы с товарами
+     *
+     * @return ProductsApi
+     */
+    public function productsApi(): ProductsApi
+    {
+        return $this->productsApi;
     }
 }

@@ -15,6 +15,7 @@ use Escorp\LemanaProApiClient\LemanaProApiClient;
 
 use Escorp\LemanaProApiClient\Api\Logistic\LogisticApi;
 use Escorp\LemanaProApiClient\Api\Parcels\ParcelsApi;
+use Escorp\LemanaProApiClient\Api\Products\ProductsApi;
 
 final class LemanaProApiClientFactory
 {
@@ -62,11 +63,13 @@ final class LemanaProApiClientFactory
         //Domain API
         $logisticApi = new LogisticApi($guzzleHttpClient, $tokenProvider, $baseUrl);
         $parcelsApi = new ParcelsApi($guzzleHttpClient, $tokenProvider, $baseUrl);
+        $productsApi = new ProductsApi($guzzleHttpClient, $tokenProvider, $baseUrl);
 
         //Root client
         return new LemanaProApiClient(
                     $logisticApi,
                     $parcelsApi,
+                    $productsApi
                 );
     }
 }
