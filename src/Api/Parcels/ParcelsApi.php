@@ -8,6 +8,7 @@ use Escorp\LemanaProApiClient\Dto\Parcels\ParcelsResponse;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelStatusDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelCancelDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelDto;
+use Escorp\LemanaProApiClient\Dto\Parcels\ParcelBoxesDto;
 
 use InvalidArgumentException;
 
@@ -217,5 +218,66 @@ class ParcelsApi extends AbstractLemanaProApi
         ]);
 
         return new LemanaProApiResponseDto($response);
+    }
+
+    /**
+     * Скомплектовать отправление
+     * @param string $parcelId
+     * @return LemanaProApiResponseDto
+     */
+    public function parcelPack(string $parcelId): LemanaProApiResponseDto
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $parcelId . ':pack';
+
+        $response = $this->request('POST', $url);
+
+        return new LemanaProApiResponseDto($response);
+    }
+
+
+    /**
+     * Получить статусы отправления
+     * @param string $parcelId
+     * @return ParcelStatusDto[]
+     * @throws InvalidArgumentException
+     */
+    public function getParcelStatuses(string $parcelId): array
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $parcelId . '/statuses';
+
+        $response = $this->request('GET', $url);
+
+        $result = [];
+
+        foreach($response as $key => $item){
+            if (!is_array($item)) {
+                throw new InvalidArgumentException('ParcelStatusDto must contain array');
+            }
+
+            $result[] = ParcelStatusDto::fromArray($item);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Получить грузоместа отправления
+     * 
+     * @param string $parcelId
+     * @return array
+     */
+    public function getParcelBoxes(string $parcelId): array
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $parcelId . '/boxes';
+
+        $response = $this->request('GET', $url);
+
+        $result = [];
+
+        foreach($response as $item){
+            $result[] = ParcelBoxesDto::fromArray($item);
+        }
+
+        return $result;
     }
 }
