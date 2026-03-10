@@ -3,9 +3,11 @@
 namespace Escorp\LemanaProApiClient\Api\Parcels;
 
 use Escorp\LemanaProApiClient\Api\AbstractLemanaProApi;
+use Escorp\LemanaProApiClient\Dto\LemanaProApiResponseDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelsResponse;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelStatusDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelCancelDto;
+use Escorp\LemanaProApiClient\Dto\Parcels\ParcelDto;
 
 use InvalidArgumentException;
 
@@ -165,5 +167,55 @@ class ParcelsApi extends AbstractLemanaProApi
         ]);
 
         return $response;
+    }
+
+    /**
+     * Получить отправление по parcelId
+     * Возвращает информацию об отправлении по переданному идентификатору в формате MP0123456-001.
+     *
+     * @param string $parcelId
+     * @return ParcelDto
+     */
+    public function getParcelById(string $parcelId): ParcelDto
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $parcelId;
+
+        $response = $this->request('GET', $url);
+
+        return ParcelDto::fromArray($response);
+    }
+
+    /**
+     * Подтвердить отправление
+     *
+     * @param string $parcelId
+     * @return LemanaProApiResponseDto
+     */
+    public function parcelConfirm(string $parcelId): LemanaProApiResponseDto
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $parcelId . ':confirm';
+
+        $response = $this->request('POST', $url);
+
+        return new LemanaProApiResponseDto($response);
+    }
+
+    /**
+     * Отменить отправление
+     * @param ParcelCancelDto $prcelCancelDto
+     * @return LemanaProApiResponseDto
+     */
+    public function parcelCancel(ParcelCancelDto $prcelCancelDto): LemanaProApiResponseDto
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $prcelCancelDto->parcelId . ':cancel';
+
+        $response = $this->request('POST', $url, [
+            'query'   => [
+                'stage' => $prcelCancelDto->stage,
+                'reason' => $prcelCancelDto->reason,
+            ]
+        ]);
+
+        return new LemanaProApiResponseDto($response);
     }
 }

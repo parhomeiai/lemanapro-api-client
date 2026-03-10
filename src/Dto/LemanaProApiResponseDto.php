@@ -12,6 +12,8 @@ class LemanaProApiResponseDto
     /** @var mixed */
     public $data;
 
+    private $messages = null;
+
     /**
      *
      * @param mixed $data
@@ -21,6 +23,10 @@ class LemanaProApiResponseDto
     public function __construct($data)
     {
         $this->data = $data;
+
+        if(isset($data['messages'])){
+            $this->messages = $data['messages'];
+        }
     }
 
     /**
@@ -42,6 +48,15 @@ class LemanaProApiResponseDto
     function getData(): mixed
     {
         return $this->data;
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    function getMessages()
+    {
+        return $this->messages;
     }
 }
 

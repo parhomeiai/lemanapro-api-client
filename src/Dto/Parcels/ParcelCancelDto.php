@@ -30,7 +30,7 @@ class ParcelCancelDto
     /**
      *
      * @param string $parcelId
-     * @param string $stage
+     * @param string $stage - Enum: "CancelAtConfirmation" "CancelAfterConfirmation"
      * @param string $reason
      */
     function __construct(string $parcelId, string $stage, string $reason) {
@@ -59,7 +59,7 @@ class ParcelCancelDto
             (string)$data['reason']
         );
     }
-    
+
     public function toArray(): array
     {
         return array_filter([
