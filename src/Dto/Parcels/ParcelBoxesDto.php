@@ -63,4 +63,20 @@ class ParcelBoxesDto
             $products,
         );
     }
+
+    public function toArray(): array
+    {
+        $products = [];
+
+        /**
+         * @param ParcelBoxesDto $product
+         */
+        foreach($this->products as $product){
+            $products[] = $product->toArray();
+        }
+
+        return [
+            'products' => $products,
+        ];
+    }
 }

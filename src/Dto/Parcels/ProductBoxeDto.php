@@ -68,4 +68,18 @@ class ProductBoxeDto
             (int)$data['placeTotal'],
         );
     }
+
+    /**
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return array_filter([
+            'productBUReference' => $this->productBUReference,
+            'quantity' => $this->quantity,
+            'placeNumber' => $this->placeNumber,
+            'placeTotal' => $this->placeTotal
+        ], fn($v) => $v !== null);
+    }
 }

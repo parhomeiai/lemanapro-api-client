@@ -9,6 +9,8 @@ use Escorp\LemanaProApiClient\Dto\Parcels\ParcelStatusDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelCancelDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelDto;
 use Escorp\LemanaProApiClient\Dto\Parcels\ParcelBoxesDto;
+use Escorp\LemanaProApiClient\Dto\Parcels\CreateAcceptanceReportsResponse;
+use Escorp\LemanaProApiClient\Dto\Parcels\DocumentDto;
 
 use InvalidArgumentException;
 
@@ -262,7 +264,7 @@ class ParcelsApi extends AbstractLemanaProApi
 
     /**
      * Получить грузоместа отправления
-     * 
+     *
      * @param string $parcelId
      * @return array
      */
@@ -280,4 +282,88 @@ class ParcelsApi extends AbstractLemanaProApi
 
         return $result;
     }
+
+    /**
+     * Обновить грузоместа отправления
+     * @param string $parcelId
+     * @param ParcelBoxesDto[] $boxes
+     * @return type
+     * @throws InvalidArgumentException
+     */
+    public function updateParcelBoxes(string $parcelId, array $boxes)
+    {
+        foreach ($boxes as $b) {
+            if (!$b instanceof ParcelBoxesDto) {
+                throw new InvalidArgumentException('boxes must contain ParcelBoxesDto');
+            }
+        }
+
+        $url = $this->baseUrl . '/orders/merchants/v1/parcels/' . $parcelId . '/boxes';
+
+        $response = $this->request('PUT', $url, [
+            'json'   => array_map(function(ParcelBoxesDto $parcelBoxesDto){return $parcelBoxesDto->toArray();}, $boxes)
+        ]);
+
+        return $response;
+    }
+
+    /**
+     * Создание акта приема - передачи
+     * @param array $parcelIds
+     * @return CreateAcceptanceReportsResponse
+     */
+    public function createAcceptanceReports(array $parcelIds): CreateAcceptanceReportsResponse
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/acceptance-reports';
+
+        $response = $this->request('POST', $url, [
+            'json' => [
+                'parcelIds' => $parcelIds
+            ]
+        ]);
+
+        return CreateAcceptanceReportsResponse::fromArray($response);
+    }
+
+    /**
+     * Получение сопросводительных документов по одному отправлению
+     *
+     * @param string $parcelId
+     * @param string $documentType - Enum: "productList" "barcodeSticker" "acceptanceReport" "acceptanceReportBarcodeStickers"
+     * @return DocumentDto
+     */
+    public function getDocuments(string $parcelId, string $documentType): DocumentDto
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/documents/' . $parcelId;
+
+        $response = $this->request('GET', $url, [
+            'query'   => [
+                'documentType' => $documentType,
+            ]
+        ]);
+
+        return DocumentDto::fromArray($response);
+    }
+
+    /**
+     * Получение сопросводительных документов по списку отправлений
+     * @param array $parcelsIds
+     * @param string $documentType - Enum: "selectedProductLists" "selectedBarcodeStickers"
+     * @return DocumentDto
+     */
+    public function documentsByParcelsIds(array $parcelsIds, string $documentType): DocumentDto
+    {
+        $url = $this->baseUrl . '/orders/merchants/v1/documents';
+
+        $response = $this->request('POST', $url, [
+            'json'   => [
+                'documentType' => $documentType,
+                'parcelIds' => $parcelsIds
+            ]
+        ]);
+
+        return DocumentDto::fromArray($response);
+    }
+
+
 }
