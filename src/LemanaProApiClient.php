@@ -6,6 +6,7 @@ use Escorp\LemanaProApiClient\Api\Logistic\LogisticApi;
 use Escorp\LemanaProApiClient\Api\Parcels\ParcelsApi;
 use Escorp\LemanaProApiClient\Api\Products\ProductsApi;
 use Escorp\LemanaProApiClient\Api\Prices\PricesApi;
+use Escorp\LemanaProApiClient\Api\Stocks\StocksApi;
 
 class LemanaProApiClient
 {
@@ -17,16 +18,20 @@ class LemanaProApiClient
 
     public PricesApi $pricesApi;
 
+    public StocksApi $stocksApi;
+
     public function __construct(
             LogisticApi $logisticApi,
             ParcelsApi $parcelsApi,
             ProductsApi $productsApi,
-            PricesApi $pricesApi
+            PricesApi $pricesApi,
+            StocksApi $stocksApi
     ) {
         $this->logisticApi = $logisticApi;
         $this->parcelsApi = $parcelsApi;
         $this->productsApi = $productsApi;
         $this->pricesApi = $pricesApi;
+        $this->stocksApi = $stocksApi;
     }
 
     public function ping(): string
@@ -72,5 +77,15 @@ class LemanaProApiClient
     public function pricesApi(): PricesApi
     {
         return $this->pricesApi;
+    }
+
+    /**
+     * Возвращает объект для работы с остатками
+     *
+     * @return StocksApi
+     */
+    public function stocksApi(): StocksApi
+    {
+        return $this->stocksApi;
     }
 }
