@@ -21,7 +21,7 @@ class LemanaProHttpException extends LemanaProApiClientException
 
     /**
      *
-     * @param WbErrorDto $error
+     * @param LemanaProErrorDto $error
      */
     public function __construct(LemanaProErrorDto $error, $httpStatus = null)
     {
@@ -29,7 +29,7 @@ class LemanaProHttpException extends LemanaProApiClientException
         $message = (is_array($error->message)) ? (reset($error->message)) : ($error->message);
         $message = ($message) ? ($message) : ($error->error);
 
-        parent::__construct($message, $code);
+        parent::__construct($message, (int)$code);
         $this->error = $error;
         $this->httpStatus = $httpStatus;
     }

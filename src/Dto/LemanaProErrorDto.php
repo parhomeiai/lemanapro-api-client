@@ -18,9 +18,9 @@ class LemanaProErrorDto
 
     /**
      * Код ошибки
-     * @var int|null
+     * @var mixed
      */
-    public ?int $code;
+    public $code;
 
     /**
      * Код http ответа
@@ -35,10 +35,16 @@ class LemanaProErrorDto
     public $message;
 
     /**
-     * Тест ошибки
-     * @var string|null
+     *
+     * @var type
      */
-    public ?string $error;
+    public $details;
+
+    /**
+     * Текст ошибки
+     * @var mixed
+     */
+    public $error;
 
     /**
      *
@@ -51,10 +57,13 @@ class LemanaProErrorDto
 
         $dto->data = $data;
 
-        $dto->code       = isset($data['code']) ? (int)$data['code'] : null;
-        $dto->statusCode       = isset($data['statusCode']) ? (int)$data['statusCode'] : null;
-        $dto->error       = isset($data['error']) ? (string)$data['error'] : null;
-        $dto->message  = $data['message'] ?? null;
+        $dataError = (isset($data['error']) && is_array($data['error'])) ? ($data['error']) : $data;
+
+        $dto->code       = $dataError['code'] ?? null;
+        $dto->statusCode       = isset($dataError['statusCode']) ? (int)$dataError['statusCode'] : null;
+        $dto->error       = $data['error'] ?? null;
+        $dto->message  = $dataError['message'] ?? null;
+        $dto->details  = $dataError['details'] ?? null;
 
         return $dto;
     }

@@ -10,6 +10,8 @@ use Escorp\LemanaProApiClient\Exceptions\DtoMappingException;
 class SellerCommercialItemDto
 {
 
+    public array $data;
+
     /**
      * Уникальный идентификатор партнера в системе
      * @var int
@@ -71,7 +73,8 @@ class SellerCommercialItemDto
     public ?string $commercialItemType;
 
 
-    function __construct(?int $sellerIdentifier, ?string $productModelCategoryIdentifier, ?string $commercialItemBuReference, ?string $sellerCommercialItemIdentifier, ?string $commercialItemManufacturerIdentifier, ?string $commercialItemNomenclatureCode, ?string $commercialItemGTIN, ?string $commercialItemLongDesignation, ?string $commercialItemStatus, ?string $commercialItemType) {
+    function __construct(array $data, ?int $sellerIdentifier, ?string $productModelCategoryIdentifier, ?string $commercialItemBuReference, ?string $sellerCommercialItemIdentifier, ?string $commercialItemManufacturerIdentifier, ?string $commercialItemNomenclatureCode, ?string $commercialItemGTIN, ?string $commercialItemLongDesignation, ?string $commercialItemStatus, ?string $commercialItemType) {
+        $this->data = $data;
         $this->sellerIdentifier = $sellerIdentifier;
         $this->productModelCategoryIdentifier = $productModelCategoryIdentifier;
         $this->commercialItemBuReference = $commercialItemBuReference;
@@ -93,6 +96,7 @@ class SellerCommercialItemDto
     public static function fromArray(array $data): self
     {
         return new self(
+            $data,
             isset($data['sellerIdentifier']) ? (int)$data['sellerIdentifier'] : null,
             isset($data['productModelCategoryIdentifier']) ? (string)$data['productModelCategoryIdentifier'] : null,
             isset($data['commercialItemBuReference']) ? (string)$data['commercialItemBuReference'] : null,
