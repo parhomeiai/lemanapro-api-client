@@ -16,7 +16,7 @@ class PricesApi extends AbstractLemanaProApi
 
     /**
      * Загрузка продажных цен
-     * @param array $salesPrices
+     * @param SalesPriceDto[] $salesPrices
      * @return UploadSellerSalesPricesResponse
      * @throws InvalidArgumentException
      */

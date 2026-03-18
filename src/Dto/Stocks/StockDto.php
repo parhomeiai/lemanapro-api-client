@@ -74,4 +74,46 @@ class StockDto
             'stockTheoreticalQuantity' => $this->stockTheoreticalQuantity
         ], fn($v) => $v !== null);
     }
+
+    function getProductBUReference(): int
+    {
+        return $this->productBUReference;
+    }
+
+    function getStockTheoreticalQuantity(): float
+    {
+        return $this->stockTheoreticalQuantity;
+    }
+
+    function getStockReservedQuantity(): float
+    {
+        return $this->stockReservedQuantity;
+    }
+
+    function getStockAvailableForSaleQuantity(): float
+    {
+        return $this->stockAvailableForSaleQuantity;
+    }
+
+    function setProductBUReference(int $productBUReference): void
+    {
+        $this->productBUReference = $productBUReference;
+    }
+
+    function setStockTheoreticalQuantity(float $stockTheoreticalQuantity): void
+    {
+        $this->stockTheoreticalQuantity = $stockTheoreticalQuantity;
+    }
+
+    function setStockReservedQuantity(float $stockReservedQuantity): void
+    {
+        $this->stockReservedQuantity = $stockReservedQuantity;
+    }
+
+    function setStockAvailableForSaleQuantity(float $stockAvailableForSaleQuantity): void
+    {
+        $this->stockAvailableForSaleQuantity = $stockAvailableForSaleQuantity;
+    }
+
+
 }

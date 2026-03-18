@@ -67,4 +67,34 @@ class SalesPriceDto
             'salesPriceValue' => ['salesPriceValueInConsumerUnit' => $this->salesPriceValue->toArray()]
         ], fn($v) => $v !== null);
     }
+
+    function getCommercialItemBuReference(): string
+    {
+        return $this->commercialItemBuReference;
+    }
+
+    function getLocation(): LocationDto
+    {
+        return $this->location;
+    }
+
+    function getSalesPriceValue(): SalesPriceValueDto
+    {
+        return $this->salesPriceValue;
+    }
+
+    function setCommercialItemBuReference(string $commercialItemBuReference): void
+    {
+        $this->commercialItemBuReference = $commercialItemBuReference;
+    }
+
+    function setLocation(LocationDto $location): void
+    {
+        $this->location = $location;
+    }
+
+    function setSalesPriceValue(SalesPriceValueDto $salesPriceValue): void
+    {
+        $this->salesPriceValue = $salesPriceValue;
+    }
 }
