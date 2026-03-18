@@ -41,7 +41,7 @@ class LocationsResponse extends LemanaProApiResponseDto
 
     /**
      * Возвращает локации
-     * @return array
+     * @return LogisticLocationsDto[]
      */
     public function logisticLocations(): array
     {
