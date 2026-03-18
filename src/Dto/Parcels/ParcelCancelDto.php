@@ -68,4 +68,30 @@ class ParcelCancelDto
             'reason' => $this->reason
         ], fn($v) => $v !== null);
     }
+
+    function getParcelId(): string {
+        return $this->parcelId;
+    }
+
+    function getStage(): string {
+        return $this->stage;
+    }
+
+    function getReason(): string {
+        return $this->reason;
+    }
+
+    function setParcelId(string $parcelId): void {
+        $this->parcelId = $parcelId;
+    }
+
+    function setStage(string $stage): void {
+        $this->stage = $stage;
+    }
+
+    function setReason(string $reason): void {
+        $this->reason = $reason;
+    }
+
+
 }

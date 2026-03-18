@@ -79,4 +79,47 @@ class ParcelBoxesDto
             'products' => $products,
         ];
     }
+
+    /**
+     *
+     * @return string
+     */
+    function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @return ProductBoxeDto[]
+     */
+    function getProducts(): array
+    {
+        return $this->products;
+    }
+
+    /**
+     *
+     * @param string $id
+     * @return void
+     */
+    function setId(string $id): void {
+        $this->id = $id;
+    }
+
+    /**
+     *
+     * @param ProductBoxeDto[] $products
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    function setProducts(array $products): void {
+        foreach ($products as $p) {
+            if (!$p instanceof ProductBoxeDto) {
+                throw new InvalidArgumentException('products must contain ProductBoxeDto');
+            }
+        }
+
+        $this->products = $products;
+    }
 }

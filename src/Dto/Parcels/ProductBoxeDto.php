@@ -82,4 +82,38 @@ class ProductBoxeDto
             'placeTotal' => $this->placeTotal
         ], fn($v) => $v !== null);
     }
+
+    function getProductBUReference(): string {
+        return $this->productBUReference;
+    }
+
+    function getQuantity(): int {
+        return $this->quantity;
+    }
+
+    function getPlaceNumber(): int {
+        return $this->placeNumber;
+    }
+
+    function getPlaceTotal(): int {
+        return $this->placeTotal;
+    }
+
+    function setProductBUReference(string $productBUReference): void {
+        $this->productBUReference = $productBUReference;
+    }
+
+    function setQuantity(int $quantity): void {
+        $this->quantity = $quantity;
+    }
+
+    function setPlaceNumber(int $placeNumber): void {
+        $this->placeNumber = $placeNumber;
+    }
+
+    function setPlaceTotal(int $placeTotal): void {
+        $this->placeTotal = $placeTotal;
+    }
+
+
 }
