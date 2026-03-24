@@ -11,6 +11,8 @@ use InvalidArgumentException;
  */
 class ParcelDto
 {
+    public array $data;
+
     /**
      * Уникальный идентификатор отправления
      * @var string
@@ -78,7 +80,7 @@ class ParcelDto
     public float $calculatedWidth;
 
 
-    function __construct(string $id, string $creationDate, float $parcelPrice, string $promisedDeliveryDate, float $deliveryCost, PickupDto $pickup, array $products, float $calculatedWeight, float $calculatedLength, float $calculatedHeight, float $calculatedWidth)
+    function __construct(array $data, string $id, string $creationDate, float $parcelPrice, string $promisedDeliveryDate, float $deliveryCost, PickupDto $pickup, array $products, float $calculatedWeight, float $calculatedLength, float $calculatedHeight, float $calculatedWidth)
     {
         foreach ($products as $p) {
             if (!$p instanceof ProductDto) {
@@ -86,6 +88,7 @@ class ParcelDto
             }
         }
 
+        $this->data = $data;
         $this->id = $id;
         $this->creationDate = $creationDate;
         $this->parcelPrice = $parcelPrice;
@@ -119,6 +122,7 @@ class ParcelDto
         }
 
         return new self(
+            $data,
             (string)$data['id'],
             (string)$data['creationDate'],
             (float)$data['parcelPrice'],
@@ -132,4 +136,54 @@ class ParcelDto
             (float)$data['calculatedWidth'],
         );
     }
+
+    function getData(): array
+    {
+        return $this->data;
+    }
+
+    function getId(): string {
+        return $this->id;
+    }
+
+    function getCreationDate(): string {
+        return $this->creationDate;
+    }
+
+    function getParcelPrice(): float {
+        return $this->parcelPrice;
+    }
+
+    function getPromisedDeliveryDate(): string {
+        return $this->promisedDeliveryDate;
+    }
+
+    function getDeliveryCost(): float {
+        return $this->deliveryCost;
+    }
+
+    function getPickup(): PickupDto {
+        return $this->pickup;
+    }
+
+    function getProducts(): array {
+        return $this->products;
+    }
+
+    function getCalculatedWeight(): float {
+        return $this->calculatedWeight;
+    }
+
+    function getCalculatedLength(): float {
+        return $this->calculatedLength;
+    }
+
+    function getCalculatedHeight(): float {
+        return $this->calculatedHeight;
+    }
+
+    function getCalculatedWidth(): float {
+        return $this->calculatedWidth;
+    }
+
 }
