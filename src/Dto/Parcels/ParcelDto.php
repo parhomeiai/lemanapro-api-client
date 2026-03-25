@@ -166,6 +166,11 @@ class ParcelDto
         return $this->pickup;
     }
 
+    /**
+     * Возвращает товары
+     * 
+     * @return ProductDto[]
+     */
     function getProducts(): array {
         return $this->products;
     }

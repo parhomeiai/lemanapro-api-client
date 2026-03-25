@@ -50,7 +50,7 @@ class ProductsApi extends AbstractLemanaProApi
      */
     public function getSellerCommercialItemsBatch(array $commercialItemBuReference = []): array
     {
-        $page = 0;
+        $page = 1;
         $perPage = 50;
 
         $result = [];

@@ -27,9 +27,9 @@ class ParcelsApi extends AbstractLemanaProApi
      * @param string|null Enum: "created" "canceled" "packingStarted" "awaitingMarking" "failedMarking" "expiredMarking" "successMarking" "refused" "packingCompleted" "shipped" "deliveryStarted" "delivered" $status
      * @param int $limit
      * @param int $offset
-     * @return type
+     * @return ParcelsResponse
      */
-    public function getParcels(?string $status = null, int $limit = 100, int $offset = 0)
+    public function getParcels(?string $status = null, int $limit = 100, int $offset = 0): ParcelsResponse
     {
         $url = $this->baseUrl . '/orders/merchants/v1/parcels';
 
@@ -53,7 +53,7 @@ class ParcelsApi extends AbstractLemanaProApi
      * Возвращает все отправления
      *
      * @param string|null Enum: "created" "canceled" "packingStarted" "awaitingMarking" "failedMarking" "expiredMarking" "successMarking" "refused" "packingCompleted" "shipped" "deliveryStarted" "delivered" $status
-     * @return array
+     * @return ParcelDto[]
      */
     public function getParcelsBatch(?string $status = null): array
     {
@@ -81,15 +81,29 @@ class ParcelsApi extends AbstractLemanaProApi
     }
 
     /**
+     * Возвращает новые отправления, ожидающие подтверждения
+     *
+     * @return ParcelDto[]
+     */
+    public function getParcelsCreated(): array
+    {
+        return $this->getParcelsBatch('created');
+    }
+
+    /**
      * Получить статусы для отправлений
      * Возвращает список отправлений с историческими статусами
      *
      * @param array $parcelsIds - идентификаторы отправления в формате MP0123456-001.
-     * @return array
+     * @return ParcelStatusDto[]
      * @throws InvalidArgumentException
      */
     public function getParcelsStatuses(array $parcelsIds): array
     {
+        if(count($parcelsIds) > 100){
+            throw new InvalidArgumentException('parcelsIds must be an array of no more than 100 elements');
+        }
+
         $url = $this->baseUrl . '/orders/merchants/v1/parcels:statuses';
 
         $response = $this->request('POST', $url, [
@@ -105,6 +119,25 @@ class ParcelsApi extends AbstractLemanaProApi
             foreach($items as $item){
                 $result[$key][] = ParcelStatusDto::fromArray($item);
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Возвращает список отправлений с историческими статусами
+     * 
+     * @param array $parcelsIds
+     * @return ParcelStatusDto[]
+     */
+    public function getParcelsStatusesBatch(array $parcelsIds): array
+    {
+        $result = [];
+
+        foreach(array_chunk($parcelsIds, 100) as $parcelsIdsChunck){
+            $statuseDtos = $this->getParcelsStatuses($parcelsIdsChunck);
+
+            $result = $result + $statuseDtos;
         }
 
         return $result;

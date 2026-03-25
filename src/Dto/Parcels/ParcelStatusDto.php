@@ -51,4 +51,22 @@ class ParcelStatusDto
             (string)$data['date'],
         );
     }
+
+    /**
+     * Возвращает Наименование статуса
+     * @return string
+     */
+    function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Возвращает дату получения статуса
+     * @return string
+     */
+    function getDate(): string
+    {
+        return $this->date;
+    }
 }

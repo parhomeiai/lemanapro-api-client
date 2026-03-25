@@ -69,4 +69,44 @@ class ProductDto
             (float)$data['comissionRate'],
         );
     }
+
+    /**
+     * Уникальный идентификатор продукта
+     * @return string
+     */
+    function getProductBUReference(): string {
+        return $this->productBUReference;
+    }
+
+    /**
+     * Код производителя
+     * @return string
+     */
+    function getVendorCode(): string {
+        return $this->vendorCode;
+    }
+
+    /**
+     * Стоимость продукта
+     * @return float
+     */
+    function getSalesPriceValueInConsumerUnitValue(): float {
+        return $this->salesPriceValueInConsumerUnitValue;
+    }
+
+    /**
+     * Количество
+     * @return int
+     */
+    function getQty(): int {
+        return $this->qty;
+    }
+
+    /**
+     * Комиссия
+     * @return float
+     */
+    function getComissionRate(): float {
+        return $this->comissionRate;
+    }
 }
