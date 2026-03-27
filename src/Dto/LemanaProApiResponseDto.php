@@ -45,7 +45,7 @@ class LemanaProApiResponseDto
      * Возвращает сырые данные
      * @return mixed
      */
-    function getData(): mixed
+    function getData()
     {
         return $this->data;
     }
