@@ -30,7 +30,7 @@ class ParcelBoxesDto
     {
         foreach ($products as $p) {
             if (!$p instanceof ProductBoxeDto) {
-                throw new InvalidArgumentException('products must contain ProductBoxeDto');
+                throw new \InvalidArgumentException('products must contain ProductBoxeDto');
             }
         }
 
@@ -116,7 +116,7 @@ class ParcelBoxesDto
     function setProducts(array $products): void {
         foreach ($products as $p) {
             if (!$p instanceof ProductBoxeDto) {
-                throw new InvalidArgumentException('products must contain ProductBoxeDto');
+                throw new \InvalidArgumentException('products must contain ProductBoxeDto');
             }
         }
 

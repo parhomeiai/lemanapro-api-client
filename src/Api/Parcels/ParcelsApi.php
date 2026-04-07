@@ -126,7 +126,7 @@ class ParcelsApi extends AbstractLemanaProApi
 
     /**
      * Возвращает список отправлений с историческими статусами
-     * 
+     *
      * @param array $parcelsIds
      * @return ParcelStatusDto[]
      */
