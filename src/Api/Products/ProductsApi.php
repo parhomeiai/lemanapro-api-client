@@ -33,7 +33,7 @@ class ProductsApi extends AbstractLemanaProApi
         ];
 
         if(!empty($commercialItemBuReference)){
-            $query['commercialItemBuReference'] = $commercialItemBuReference;
+            $query['commercialItemBuReference'] = implode(',', $commercialItemBuReference);
         }
 
         $response = $this->request('GET', $url, [
