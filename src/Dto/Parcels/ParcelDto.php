@@ -168,7 +168,7 @@ class ParcelDto
 
     /**
      * Возвращает товары
-     * 
+     *
      * @return ProductDto[]
      */
     function getProducts(): array {
@@ -191,4 +191,21 @@ class ParcelDto
         return $this->calculatedWidth;
     }
 
+    /**
+     * Возвращает уникальный идентификаторы продуктов в заказе
+     * @return array
+     */
+    function getProductsBUReferences(): array
+    {
+        return array_map(fn($item) => $item->getProductBUReference(), $this->products);
+    }
+
+    /**
+     * Возвращает коды производителя
+     * @return array
+     */
+    function getProductsVendorCodes(): array
+    {
+        return array_map(fn($item) => $item->getVendorCode(), $this->products);
+    }
 }
