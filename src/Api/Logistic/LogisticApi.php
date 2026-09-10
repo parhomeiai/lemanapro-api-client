@@ -38,7 +38,7 @@ class LogisticApi extends AbstractLemanaProApi
 
     /**
      * Возвращает весь список логистических локаций, соответствующих указанному владельцу
-     * @return array
+     * @return array | LogisticLocationsDto[]
      */
     public function getLocationsBatch(): array
     {
