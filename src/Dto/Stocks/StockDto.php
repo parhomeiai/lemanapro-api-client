@@ -7,7 +7,7 @@ use Escorp\LemanaProApiClient\Exceptions\DtoMappingException;
 /**
  * Остатки
  */
-class StockDto
+class StockDto implements \JsonSerializable
 {
     /**
      * Артикул товара (код ЛМ).Числовое значение, длина 6–8 символов
@@ -115,5 +115,16 @@ class StockDto
         $this->stockAvailableForSaleQuantity = $stockAvailableForSaleQuantity;
     }
 
-
+    public function jsonSerialize(): array
+    {
+        return array_merge(
+            get_object_vars($this),
+            [
+                'productBUReference' => $this->productBUReference,
+                'stockTheoreticalQuantity' => $this->stockTheoreticalQuantity,
+                'stockReservedQuantity' => $this->stockReservedQuantity,
+                'stockAvailableForSaleQuantity' => $this->stockAvailableForSaleQuantity,
+            ]
+        );
+    }
 }
