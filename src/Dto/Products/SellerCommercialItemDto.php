@@ -89,11 +89,13 @@ class SellerCommercialItemDto
         $this->commercialItemType = $commercialItemType;
     }
 
-    public function __set(string $name, mixed $value): void {
+    public function __set(string $name, $value): void
+    {
         $this->dynamicData[$name] = $value;
     }
 
-    public function __get(string $name): mixed {
+    public function __get(string $name)
+    {
         return $this->dynamicData[$name] ?? null;
     }
 
