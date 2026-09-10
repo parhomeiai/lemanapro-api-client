@@ -7,7 +7,7 @@ use Escorp\LemanaProApiClient\Exceptions\DtoMappingException;
 /**
  * Товар
  */
-class SellerCommercialItemDto
+class SellerCommercialItemDto implements \JsonSerializable
 {
 
     public array $data;
@@ -119,6 +119,14 @@ class SellerCommercialItemDto
             isset($data['commercialItemLongDesignation']) ? (string)$data['commercialItemLongDesignation'] : null,
             isset($data['commercialItemStatus']) ? (string)$data['commercialItemStatus'] : null,
             isset($data['commercialItemType']) ? (string)$data['commercialItemType'] : null,
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_merge(
+            get_object_vars($this),
+            $this->dynamicData
         );
     }
 }
