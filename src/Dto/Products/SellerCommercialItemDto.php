@@ -72,6 +72,8 @@ class SellerCommercialItemDto
      */
     public ?string $commercialItemType;
 
+    private array $dynamicData = [];
+
 
     function __construct(array $data, ?int $sellerIdentifier, ?string $productModelCategoryIdentifier, ?string $commercialItemBuReference, ?string $sellerCommercialItemIdentifier, ?string $commercialItemManufacturerIdentifier, ?string $commercialItemNomenclatureCode, ?string $commercialItemGTIN, ?string $commercialItemLongDesignation, ?string $commercialItemStatus, ?string $commercialItemType) {
         $this->data = $data;
@@ -85,6 +87,14 @@ class SellerCommercialItemDto
         $this->commercialItemLongDesignation = $commercialItemLongDesignation;
         $this->commercialItemStatus = $commercialItemStatus;
         $this->commercialItemType = $commercialItemType;
+    }
+
+    public function __set(string $name, mixed $value): void {
+        $this->dynamicData[$name] = $value;
+    }
+
+    public function __get(string $name): mixed {
+        return $this->dynamicData[$name] ?? null;
     }
 
     /**
